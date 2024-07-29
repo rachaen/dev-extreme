@@ -2,14 +2,18 @@ import 'devextreme/dist/css/dx.light.css';
 import './App.css';
 import Charts from './Charts';
 import RangeSelectorEx from './RangeSelectorEx';
-import TableEx from './TableEx';
+import RemoteTableEx from './RemoteTableEx';
+import LocalTableEx from './LocalTableEx';
+import ScrollingEx from './ScrollingEx';
 
 function App() {
   return (
     <div className='App'>
       {/* <Charts /> */}
       {/* <RangeSelectorEx /> */}
-      <TableEx />
+      {/* <RemoteTableEx /> */}
+      <LocalTableEx />
+      {/* <ScrollingEx /> */}
     </div>
   );
 }

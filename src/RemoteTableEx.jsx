@@ -6,9 +6,10 @@ const dataSource = AspNetData.createStore({
   key: 'Id',
   loadUrl: 'https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/Sales',
 });
-const TableEx = () => (
+
+const RemoteTableEx = () => (
   <DataGrid height={440} dataSource={dataSource} showBorders={true} remoteOperations={true} wordWrapEnabled={true}>
-    <Scrolling mode='virtual' rowRenderingMode='virtual' />
+    <Scrolling mode='infinite' rowRenderingMode='virtual' showScrollbar='always' />
     <Paging defaultPageSize={100} />
     <HeaderFilter visible={true}>
       <Search enabled={true} />
@@ -24,4 +25,4 @@ const TableEx = () => (
     </Column>
   </DataGrid>
 );
-export default TableEx;
+export default RemoteTableEx;
