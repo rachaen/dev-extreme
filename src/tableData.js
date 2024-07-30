@@ -3,24 +3,29 @@ function random() {
   s = (1103515245 * s + 12345) % 2147483647;
   return s % (10 - 1);
 }
-export function generateData(count) {
+
+export function generateData(startIndex, count) {
   let i;
-  const surnames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Harris', 'Clark', 'Allen', 'Scott', 'Carter'];
-  const names = ['James', 'John', 'Robert', 'Christopher', 'George', 'Mary', 'Nancy', 'Sandra', 'Michelle', 'Betty'];
-  const gender = ['Male', 'Female'];
+  const appIds = ['ECU', 'APP', 'LOG'];
+  const msgInfos = ['CON', 'TES1', 'TES2'];
+  const msgTexts = ['Hello world', 'control request', 'log info', 'set_default_log_level', 'log error'];
   const items = [];
-  const startBirthDate = Date.parse('1/1/1975');
-  const endBirthDate = Date.parse('1/1/1992');
-  for (i = 0; i < count; i += 1) {
-    const birthDate = new Date(startBirthDate + Math.floor((random() * (endBirthDate - startBirthDate)) / 10));
-    birthDate.setHours(12);
-    const nameIndex = random();
+  const startPCDate = Date.parse('1/1/2011');
+  const endPCDate = Date.parse('1/1/2012');
+
+  for (i = startIndex; i < startIndex + count; i += 1) {
+    const timePC = new Date(startPCDate + Math.floor((random() * (endPCDate - startPCDate)) / 10));
+    const timeCCU = (random() * 1000000).toFixed(4);
+    const appIdIndex = random();
+    const msgInfoIndex = random();
+    const msgTextIndex = random();
     const item = {
-      id: i + 1,
-      firstName: names[nameIndex],
-      lastName: surnames[random()],
-      gender: gender[Math.floor(nameIndex / 5)],
-      birthDate,
+      index: i + 1,
+      timePC: timePC.toISOString().replace('T', ' ').replace('Z', ''), // 'YYYY-MM-DD HH:MM:SS.sss'
+      timeCCU: timeCCU,
+      appId: appIds[appIdIndex],
+      msgInfo: msgInfos[msgInfoIndex],
+      msgText: msgTexts[msgTextIndex],
     };
     items.push(item);
   }
