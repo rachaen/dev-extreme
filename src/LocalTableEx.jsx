@@ -8,20 +8,17 @@ import DataGrid, {
   FilterRow,
   Paging,
   Column,
+  SearchPanel,
 } from 'devextreme-react/data-grid';
 import { generateData } from './tableData.js';
 import { Button, ScrollView } from 'devextreme-react';
-
-const customizeColumns = (columns) => {
-  columns[0].width = 70;
-};
+import DataRow from './DataRow.jsx';
 
 const LocalTableEx = () => {
-  const getDataCount = 10000;
+  const getDataCount = 1000;
   const [loadPanelEnabled, setLoadPanelEnabled] = useState(true);
   const dataGridRef = useRef(null);
   const [focusedRowKey, setFocusedRowKey] = useState(null);
-  const [autoNavigateToFocusedRow, setAutoNavigateToFocusedRow] = useState(true);
   const [isAddingData, setIsAddingData] = useState(false);
   const intervalRef = useRef(null);
   const [lastIndex, setLastIndex] = useState(0);
@@ -52,11 +49,6 @@ const LocalTableEx = () => {
     }
   }, [dataSource]);
 
-  const getScrollable = useCallback(() => {
-    const scrollable = dataGridRef.current?.instance()?.getScrollable();
-    console.log(scrollable);
-  }, [dataGridRef]);
-
   const onContentReady = useCallback(() => {
     setLoadPanelEnabled(false);
   }, []);
@@ -65,32 +57,40 @@ const LocalTableEx = () => {
     setIsAddingData((prev) => !prev);
   };
 
-  const onFocusedRowChanged = useCallback(
-    (e) => {
-      console.log('dd', e);
-      if (isAddingData) {
-        setLastIndex(e.row.data.index);
-      } else if (e.row.key) {
-        setFocusedRowKey(e.row.key);
-      }
-    },
-    [isAddingData],
-  );
+  // const onFocusedRowChanged = useCallback(
+  //   (e) => {
+  //     console.log(e);
+  //     if (isAddingData && e.row.data) {
+  //       setLastIndex(e.row.data.index);
+  //     } else if (e.row.key) {
+  //       setFocusedRowKey(e.row.key);
+  //     }
+  //   },
+  //   [isAddingData],
+  // );
+
+  const onRowClick = (e) => {
+    console.log(e);
+    setFocusedRowKey(e.key);
+  };
 
   return (
     <>
       <DataGrid
+        id='gridContainer'
         ref={dataGridRef}
-        height={440}
         dataSource={dataSource}
         keyExpr='index'
         showBorders={true}
         onContentReady={onContentReady}
         focusedRowEnabled={true}
         focusedRowKey={focusedRowKey}
-        autoNavigateToFocusedRow={autoNavigateToFocusedRow}
-        onFocusedRowChanged={onFocusedRowChanged}
+        // onFocusedRowChanged={onFocusedRowChanged}
+        dataRowRender={DataRow}
+        onRowClick={onRowClick}
+        height={500}
       >
+        <SearchPanel visible={true} highlightCaseSensitive={true} />
         <FilterRow visible={true} applyFilter='auto' />
         <Sorting mode='none' />
         <Scrolling mode='virtual' showScrollbar='always' scrollByContent={false} />
